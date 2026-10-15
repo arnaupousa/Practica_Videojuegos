@@ -33,7 +33,7 @@ namespace PPT
 
             while (!_marcador.HayGanador())
             {
-                Console.Clear();
+                ConsolaHelper.Limpiar();
                 MostrarCabeceraRonda();
                 _marcador.MostrarMarcador(_humano.Nombre, _cpu.Nombre);
 
@@ -48,16 +48,15 @@ namespace PPT
                 MostrarEnfrentamiento(jugadaUsuario, jugadaCpu);
 
                 // 4. Evaluar según las reglas canónicas
-                var (resultado, explicacion) = ReglasJuego.EvaluarRonda(jugadaUsuario, jugadaCpu);
+                ResultadoEvaluacion evaluacion = ReglasJuego.EvaluarRonda(jugadaUsuario, jugadaCpu);
 
                 // 5. Aplicar puntuación y mostrar mensaje
-                ProcesarResultadoRonda(resultado, explicacion);
+                ProcesarResultadoRonda(evaluacion.Resultado, evaluacion.Explicacion);
 
                 // 6. Pausa informativa antes de continuar si no ha terminado la partida
                 if (!_marcador.HayGanador())
                 {
-                    Console.WriteLine("\nPresiona cualquier tecla para continuar a la siguiente ronda...");
-                    Console.ReadKey(true);
+                    ConsolaHelper.Pausar("\nPresiona cualquier tecla para continuar a la siguiente ronda...");
                 }
             }
 
@@ -125,7 +124,7 @@ namespace PPT
 
         private void FinalizarPartida()
         {
-            Console.Clear();
+            ConsolaHelper.Limpiar();
             bool usuarioGano = _marcador.PuntosUsuario >= _marcador.PuntosParaGanar;
             _estadisticas.RegistrarFinPartida(usuarioGano);
 

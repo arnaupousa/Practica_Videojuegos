@@ -5,60 +5,76 @@ namespace PPT
 {
     /// <summary>
     /// Maneja la lógica de enfrentamientos y reglas de Piedra, Papel, Tijera, Lagarto, Spock.
+    /// Basado en las 10 combinaciones canónicas creadas por Sam Kass y popularizadas en The Big Bang Theory.
     /// </summary>
     public static class ReglasJuego
     {
-        // Clave: (JugadaAtacante, JugadaDefensora) -> Verbo de acción
-        private static readonly Dictionary<(OpcionJugada, OpcionJugada), string> Interacciones = 
-            new Dictionary<(OpcionJugada, OpcionJugada), string>
+        // Clave: "Atacante->Defensor" -> Verbo de acción
+        private static readonly Dictionary<string, string> Interacciones = 
+            new Dictionary<string, string>
             {
-                { (OpcionJugada.Tijera, OpcionJugada.Papel), "corta" },
-                { (OpcionJugada.Papel, OpcionJugada.Piedra), "cubre" },
-                { (OpcionJugada.Piedra, OpcionJugada.Lagarto), "aplasta" },
-                { (OpcionJugada.Lagarto, OpcionJugada.Spock), "envenena" },
-                { (OpcionJugada.Spock, OpcionJugada.Tijera), "rompe" },
-                { (OpcionJugada.Tijera, OpcionJugada.Lagarto), "decapita" },
-                { (OpcionJugada.Lagarto, OpcionJugada.Papel), "devora" },
-                { (OpcionJugada.Papel, OpcionJugada.Spock), "desautoriza" },
-                { (OpcionJugada.Spock, OpcionJugada.Piedra), "vaporiza" },
-                { (OpcionJugada.Piedra, OpcionJugada.Tijera), "aplasta" }
+                { FormarClave(OpcionJugada.Tijera, OpcionJugada.Papel), "corta" },
+                { FormarClave(OpcionJugada.Papel, OpcionJugada.Piedra), "cubre" },
+                { FormarClave(OpcionJugada.Piedra, OpcionJugada.Lagarto), "aplasta" },
+                { FormarClave(OpcionJugada.Lagarto, OpcionJugada.Spock), "envenena" },
+                { FormarClave(OpcionJugada.Spock, OpcionJugada.Tijera), "rompe" },
+                { FormarClave(OpcionJugada.Tijera, OpcionJugada.Lagarto), "decapita" },
+                { FormarClave(OpcionJugada.Lagarto, OpcionJugada.Papel), "devora" },
+                { FormarClave(OpcionJugada.Papel, OpcionJugada.Spock), "desautoriza" },
+                { FormarClave(OpcionJugada.Spock, OpcionJugada.Piedra), "vaporiza" },
+                { FormarClave(OpcionJugada.Piedra, OpcionJugada.Tijera), "aplasta" }
             };
+
+        private static string FormarClave(OpcionJugada atacante, OpcionJugada defensor)
+        {
+            return atacante.ToString() + "->" + defensor.ToString();
+        }
 
         /// <summary>
         /// Compara las elecciones de dos jugadores y determina el resultado de la ronda con su explicación.
         /// </summary>
-        public static (ResultadoRonda resultado, string explicacion) EvaluarRonda(OpcionJugada eleccionUsuario, OpcionJugada eleccionCpu)
+        public static ResultadoEvaluacion EvaluarRonda(OpcionJugada eleccionUsuario, OpcionJugada eleccionCpu)
         {
             if (eleccionUsuario == eleccionCpu)
             {
-                return (ResultadoRonda.Empate, $"¡Ambos han elegido {eleccionUsuario}! Es un empate.");
+                return new ResultadoEvaluacion(ResultadoRonda.Empate, $"¡Ambos han elegido {eleccionUsuario}! Es un empate.");
             }
 
-            if (Interacciones.TryGetValue((eleccionUsuario, eleccionCpu), out string accionUsuario))
+            string claveUsuario = FormarClave(eleccionUsuario, eleccionCpu);
+            if (Interacciones.TryGetValue(claveUsuario, out string accionUsuario))
             {
                 string explicacion = $"{eleccionUsuario} {accionUsuario} a {eleccionCpu}.";
-                return (ResultadoRonda.VictoriaUsuario, explicacion);
+                return new ResultadoEvaluacion(ResultadoRonda.VictoriaUsuario, explicacion);
             }
 
-            if (Interacciones.TryGetValue((eleccionCpu, eleccionUsuario), out string accionCpu))
+            string claveCpu = FormarClave(eleccionCpu, eleccionUsuario);
+            if (Interacciones.TryGetValue(claveCpu, out string accionCpu))
             {
                 string explicacion = $"{eleccionCpu} {accionCpu} a {eleccionUsuario}.";
-                return (ResultadoRonda.VictoriaCpu, explicacion);
+                return new ResultadoEvaluacion(ResultadoRonda.VictoriaCpu, explicacion);
             }
 
-            return (ResultadoRonda.Empate, "Ronda no concluyente.");
+            return new ResultadoEvaluacion(ResultadoRonda.Empate, "Ronda no concluyente.");
         }
 
         /// <summary>
-        /// Devuelve un texto formateado con todas las reglas canónicas del juego.
+        /// Devuelve un listado de cadenas con todas las reglas canónicas del juego.
         /// </summary>
         public static List<string> ObtenerListaReglas()
         {
-            var reglas = new List<string>();
-            foreach (var kvp in Interacciones)
+            var reglas = new List<string>
             {
-                reglas.Add($"• {kvp.Key.Item1} {kvp.Value} a {kvp.Key.Item2}");
-            }
+                "• Tijera corta a Papel",
+                "• Papel cubre a Piedra",
+                "• Piedra aplasta a Lagarto",
+                "• Lagarto envenena a Spock",
+                "• Spock rompe a Tijera",
+                "• Tijera decapita a Lagarto",
+                "• Lagarto devora a Papel",
+                "• Papel desautoriza a Spock",
+                "• Spock vaporiza a Piedra",
+                "• Piedra aplasta a Tijera"
+            };
             return reglas;
         }
     }

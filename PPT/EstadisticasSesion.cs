@@ -52,7 +52,7 @@ namespace PPT
 
         public void MostrarEstadisticas()
         {
-            Console.Clear();
+            ConsolaHelper.Limpiar();
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("======================================================");
             Console.WriteLine("            ESTADÍSTICAS GLOBALES DE SESIÓN           ");
@@ -75,8 +75,7 @@ namespace PPT
                 Console.WriteLine($" • {item.Key.ToString().PadRight(8)}: {item.Value} veces ({porcentaje}%)");
             }
 
-            Console.WriteLine("\nPresiona cualquier tecla para volver al menú...");
-            Console.ReadKey(true);
+            ConsolaHelper.Pausar("\nPresiona cualquier tecla para volver al menú...");
         }
     }
 }
