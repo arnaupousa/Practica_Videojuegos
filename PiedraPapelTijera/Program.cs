@@ -15,7 +15,7 @@ namespace PiedraPapelTijera
 
             while (!salir)
             {
-                Console.Clear();
+                LimpiarPantalla();
                 Console.WriteLine("========================================");
                 Console.WriteLine("      PIEDRA, PAPEL O TIJERAS           ");
                 Console.WriteLine("========================================");
@@ -45,8 +45,7 @@ namespace PiedraPapelTijera
                         break;
                     default:
                         Console.WriteLine("\n[Error] Opción no válida. Introduce un número del 1 al 4.");
-                        Console.WriteLine("Pulsa cualquier tecla para continuar...");
-                        Console.ReadKey();
+                        Pausar();
                         break;
                 }
             }
@@ -80,7 +79,7 @@ namespace PiedraPapelTijera
         /// </summary>
         private static void MostrarReglas()
         {
-            Console.Clear();
+            LimpiarPantalla();
             Console.WriteLine("========================================");
             Console.WriteLine("            REGLAS DEL JUEGO            ");
             Console.WriteLine("========================================");
@@ -92,8 +91,35 @@ namespace PiedraPapelTijera
             Console.WriteLine("• Se juega al mejor de 5 rondas.");
             Console.WriteLine("• El primer jugador en acumular 3 victorias gana la partida.");
             Console.WriteLine("========================================");
-            Console.WriteLine("\nPulsa cualquier tecla para volver al menú...");
-            Console.ReadKey();
+            Pausar();
+        }
+
+        /// <summary>
+        /// Limpia la pantalla de forma segura sin fallar si la consola no soporta Clear.
+        /// </summary>
+        public static void LimpiarPantalla()
+        {
+            try
+            {
+                Console.Clear();
+            }
+            catch
+            {
+                Console.WriteLine("\n----------------------------------------\n");
+            }
+        }
+
+        /// <summary>
+        /// Realiza una pausa segura esperando confirmación del usuario.
+        /// </summary>
+        public static void Pausar()
+        {
+            Console.WriteLine("\nPulsa [Enter] para continuar...");
+            try
+            {
+                Console.ReadLine();
+            }
+            catch { }
         }
     }
 }

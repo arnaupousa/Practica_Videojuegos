@@ -50,7 +50,7 @@ namespace PiedraPapelTijera
         /// </summary>
         public void Mostrar()
         {
-            Console.Clear();
+            Program.LimpiarPantalla();
             Console.WriteLine("========================================");
             Console.WriteLine("        ESTADÍSTICAS Y RACHAS           ");
             Console.WriteLine("========================================");
@@ -60,8 +60,7 @@ namespace PiedraPapelTijera
             Console.WriteLine($"Racha actual de victorias:{RachaActual}");
             Console.WriteLine($"Racha máxima conseguida:  {RachaMaxima}");
             Console.WriteLine("========================================");
-            Console.WriteLine("\nPulsa cualquier tecla para volver al menú...");
-            Console.ReadKey();
+            Program.Pausar();
         }
     }
 }

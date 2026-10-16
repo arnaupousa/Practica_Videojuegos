@@ -1,30 +1,25 @@
 @echo off
-chcp 65001 >nul
+cd /d "%~dp0"
 title Piedra, Papel o Tijeras
 
-:: 1. Comprobar si dotnet está en el PATH
-where dotnet >nul 2>nul
-if %errorlevel% == 0 (
-    echo Iniciando con dotnet...
-    dotnet run
-    goto fin
-)
-
-:: 2. Si no está dotnet en el PATH, compilar con el compilador csc de Visual Studio
-set CSC="C:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Current\Bin\Roslyn\csc.exe"
-if exist %CSC% (
-    echo Compilando juego con Visual Studio...
-    %CSC% -nologo -out:PiedraPapelTijera.exe Program.cs Jugador.cs Partida.cs Estadisticas.cs
-    if %errorlevel% == 0 (
-        cls
-        PiedraPapelTijera.exe
-        del PiedraPapelTijera.exe >nul 2>nul
-        goto fin
+if not exist "PiedraPapelTijera.exe" (
+    echo Compilando juego...
+    if exist "C:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Current\Bin\Roslyn\csc.exe" (
+        "C:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Current\Bin\Roslyn\csc.exe" -nologo -out:PiedraPapelTijera.exe Program.cs Jugador.cs Partida.cs Estadisticas.cs
+    ) else (
+        where dotnet >nul 2>nul
+        if %errorlevel% == 0 (
+            dotnet build -o .
+        )
     )
 )
 
-echo [Error] No se ha encontrado dotnet ni el compilador de Visual Studio.
-echo Por favor, abre el proyecto desde Visual Studio o instala el SDK de .NET.
-pause
+if exist "PiedraPapelTijera.exe" (
+    cls
+    PiedraPapelTijera.exe
+) else (
+    echo [ERROR] No se pudo encontrar ni generar PiedraPapelTijera.exe.
+    echo Asegurate de compilar el proyecto en Visual Studio.
+)
 
-:fin
+pause
