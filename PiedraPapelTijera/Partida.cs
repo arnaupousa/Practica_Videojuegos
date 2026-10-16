@@ -27,7 +27,7 @@ namespace PiedraPapelTijera
 
             while (usuario.Puntos < VictoriasObjetivo && cpu.Puntos < VictoriasObjetivo)
             {
-                Console.Clear();
+                Program.LimpiarPantalla();
                 MostrarEncabezado(numeroRonda);
 
                 int jugadaUsuario = usuario.ElegirJugada();
@@ -58,8 +58,7 @@ namespace PiedraPapelTijera
                 MostrarMarcador();
                 numeroRonda++;
 
-                Console.WriteLine("\nPulsa cualquier tecla para pasar a la siguiente ronda...");
-                Console.ReadKey();
+                Program.Pausar();
             }
 
             return MostrarResultadoFinal();
@@ -114,7 +113,7 @@ namespace PiedraPapelTijera
         /// </summary>
         private bool MostrarResultadoFinal()
         {
-            Console.Clear();
+            Program.LimpiarPantalla();
             Console.WriteLine("========================================");
             Console.WriteLine("           PARTIDA FINALIZADA           ");
             Console.WriteLine("========================================");

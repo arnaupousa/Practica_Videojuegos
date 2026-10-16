@@ -41,11 +41,17 @@ El proyecto respeta escrupulosamente el principio de responsabilidad única divi
 
 ## 4. Cómo Compilar y Ejecutar
 
-Desde la consola, dentro de la carpeta `PiedraPapelTijera`:
+Tienes tres formas muy sencillas de arrancarlo:
 
-```bash
-dotnet run
-```
+1. **Doble clic (Recomendada):** Haz doble clic sobre el archivo `iniciar.bat` dentro de la carpeta `PiedraPapelTijera`.
+2. **Desde la terminal:**
+   ```bash
+   cd PiedraPapelTijera
+   .\iniciar.bat
+   ```
+   *(O si tienes el SDK de .NET instalado globalmente: `dotnet run`)*
+3. **Desde Visual Studio:** Abre el archivo `PiedraPapelTijera.csproj` con Visual Studio y pulsa **Ctrl + F5** (Iniciar sin depurar).
+
 
 ---
 
